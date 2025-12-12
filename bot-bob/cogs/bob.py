@@ -9,15 +9,15 @@ from util import Util
 from logger import Logger
 
 
+def check_if_not_bob(interaction: Interaction):
+    return interaction.user.id != int(dotenv_values(constants.CONFIG_FILE)[constants.BOB_KEY])
+
 class Bob(commands.GroupCog, tagged.Tagged):
     def __init__(self, bot):
         self.bot = bot
         self.TAG = type(self).__name__
         self.froggy_id = int(dotenv_values(constants.CONFIG_FILE)[constants.FROGGY_KEY])
         self.bob_id = int(dotenv_values(constants.CONFIG_FILE)[constants.BOB_KEY])
-
-    def check_if_not_bob(self, interaction: Interaction):
-        return interaction.user.id != self.bob_id
 
     @app_commands.command(
         name="mute",
@@ -30,6 +30,10 @@ class Bob(commands.GroupCog, tagged.Tagged):
         message = "muted bob" if bob is not None and bob.voice.mute else "unmuted bob"
 
         await Bob.__message_if_bob_on(interaction, bob is not None, message)
+
+    @mute.error
+    async def mute_error(self, interaction: Interaction, error):
+        await self.__handle_error(interaction, error)
 
     @staticmethod
     async def __mute(member: Member):
@@ -46,6 +50,10 @@ class Bob(commands.GroupCog, tagged.Tagged):
         message = "deafened bob" if bob is not None and bob.voice.deaf else "undeafened bob"
 
         await Bob.__message_if_bob_on(interaction, bob is not None, message)
+
+    @deafen.error
+    async def deafen_error(self, interaction: Interaction, error):
+        await self.__handle_error(interaction, error)
 
     @staticmethod
     async def __deafen(member: Member):
@@ -85,12 +93,29 @@ class Bob(commands.GroupCog, tagged.Tagged):
         else:
             await interaction.response.send_message("bob isn't even here")
 
+    async def __handle_error(self, interaction: Interaction, error):
+        if isinstance(error, app_commands.CheckFailure):
+            await self.__error_bob(interaction)
+        else:
+            await self.__error(interaction)
+
     @staticmethod
     async def __message_if_bob_on(interaction: Interaction, is_bob_on: bool, message: str):
         if is_bob_on:
             await interaction.response.send_message(message)
         else:
             await interaction.response.send_message("bob isn't on")
+
+    @staticmethod
+    async def __error_bob(interaction: Interaction):
+        await interaction.response.send_message(content="nice try bob")
+
+    @staticmethod
+    async def __error(interaction: Interaction):
+        await interaction.response.send_message(
+            content=constants.GENERIC_ERROR,
+            ephemeral=True
+        )
 
     async def __check_bob_in_voice(self, do_if_bob):
         voice_channels = self.bot.get_guild(self.froggy_id).voice_channels

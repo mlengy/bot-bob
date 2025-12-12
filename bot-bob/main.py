@@ -1,4 +1,5 @@
 import discord
+from discord import Interaction
 from dotenv import dotenv_values
 from discord.ext import commands
 
@@ -27,6 +28,14 @@ COGS = {
 intents = discord.Intents.all()
 intents.message_content = True
 bot = commands.Bot(command_prefix=constants.PREFIX, intents=intents)
+
+@bot.tree.error
+async def on_command_error(interaction: Interaction, error):
+    if not interaction.response.is_done():
+        await interaction.response.send_message(
+            content=constants.GENERIC_ERROR,
+            ephemeral=True
+        )
 
 class Main(tagged.Tagged):
     def __init__(self):
