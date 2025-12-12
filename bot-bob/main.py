@@ -6,6 +6,7 @@ from discord.ext import commands
 import constants
 import tagged
 from logger import Logger
+from util import Util
 
 
 COG_TYPE_ESSENTIALS = "essentials"
@@ -18,7 +19,8 @@ ENABLED_COG_TYPES = {
 COGS = {
     COG_TYPE_ESSENTIALS: [
         "utilities",
-        "bob"
+        "bob",
+        "pfp"
     ],
     COG_TYPE_FUN: [
         "spongebot"
@@ -31,7 +33,7 @@ bot = commands.Bot(command_prefix=constants.PREFIX, intents=intents)
 
 @bot.tree.error
 async def on_command_error(interaction: Interaction, error):
-    Logger.e(GenericError(), str(error))
+    Logger.e(GenericError(), Util.format_error(error))
     if not interaction.response.is_done():
         await interaction.response.send_message(
             content=constants.GENERIC_ERROR,

@@ -8,6 +8,7 @@ import tagged
 from util import Util
 from logger import Logger
 from main import GenericError
+from util import Util
 
 
 def get_bobs():
@@ -49,7 +50,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
 
     @mute.error
     async def mute_error(self, interaction: Interaction, error):
-        Logger.e(GenericError(), str(error))
+        Logger.e(GenericError(), Util.format_error(error))
         await self.__handle_error(interaction, error)
 
     @staticmethod
@@ -80,7 +81,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
 
     @deafen.error
     async def deafen_error(self, interaction: Interaction, error):
-        Logger.e(GenericError(), str(error))
+        Logger.e(GenericError(), Util.format_error(error))
         await self.__handle_error(interaction, error)
 
     @staticmethod

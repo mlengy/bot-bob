@@ -7,3 +7,7 @@ class Util:
     def is_admin(user_id: int):
         admins = [int(admin_id) for admin_id in dotenv_values(constants.CONFIG_FILE)[constants.ADMINS_KEY].split('\n')]
         return user_id in admins
+
+    @staticmethod
+    def format_error(error):
+        return f"{error.__class__.__name__}: {error}"

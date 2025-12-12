@@ -6,5 +6,5 @@ setup(
     description="bot bob",
     author="mkya",
     packages=["bot-bob"],
-    install_requires=["discord.py", "python-dotenv"]
+    install_requires=["discord.py", "python-dotenv", "requests"]
 )
