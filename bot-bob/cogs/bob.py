@@ -1,24 +1,13 @@
 from typing import Optional
-from dotenv import dotenv_values
 from discord.ext import commands
 from discord import app_commands, Interaction, Member
 
 import constants
 import tagged
-from util import Util
 from logger import Logger
 from main import GenericError
-from util import Util
+from util import get_bobs, check_if_not_bob, format_error
 
-
-def get_bobs():
-    bob_strings = [bob for bob in dotenv_values(constants.CONFIG_FILE)[constants.BOB_KEY].split('\n')]
-    return {
-        int(bob[0]): bob[1] for bob in (bob.split(':') for bob in bob_strings)
-    }
-
-def check_if_not_bob(interaction: Interaction):
-    return interaction.user.id not in get_bobs()
 
 class Bob(commands.GroupCog, tagged.Tagged):
     def __init__(self, bot):
@@ -50,7 +39,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
 
     @mute.error
     async def mute_error(self, interaction: Interaction, error):
-        Logger.e(GenericError(), Util.format_error(error))
+        Logger.e(GenericError(), format_error(error))
         await self.__handle_error(interaction, error)
 
     @staticmethod
@@ -81,7 +70,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
 
     @deafen.error
     async def deafen_error(self, interaction: Interaction, error):
-        Logger.e(GenericError(), Util.format_error(error))
+        Logger.e(GenericError(), format_error(error))
         await self.__handle_error(interaction, error)
 
     @staticmethod
