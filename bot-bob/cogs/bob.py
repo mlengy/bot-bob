@@ -164,7 +164,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
         return bobs_in_voice
 
     @staticmethod
-    async def __at_least_one_bob(bobs: list[Member], condition):
+    async def __at_least_one_bob(bobs, condition):
         for bob in bobs:
             if not condition(bob):
                 return True
