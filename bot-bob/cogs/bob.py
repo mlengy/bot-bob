@@ -16,10 +16,14 @@ class Bob(commands.GroupCog, tagged.Tagged):
         self.froggy_id = int(dotenv_values(constants.CONFIG_FILE)[constants.FROGGY_KEY])
         self.bob_id = int(dotenv_values(constants.CONFIG_FILE)[constants.BOB_KEY])
 
+    def check_if_not_bob(self, interaction: Interaction):
+        return interaction.user.id != self.bob_id
+
     @app_commands.command(
         name="mute",
         description="mutes bob",
     )
+    @app_commands.check(check_if_not_bob)
     async def mute(self, interaction: Interaction):
         bob = await self.__check_bob_in_voice(self.__mute)
 
@@ -35,6 +39,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
         name="deafen",
         description="deafens bob",
     )
+    @app_commands.check(check_if_not_bob)
     async def deafen(self, interaction: Interaction):
         bob = await self.__check_bob_in_voice(self.__deafen)
 
