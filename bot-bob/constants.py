@@ -4,7 +4,6 @@ ENV_TOKEN = PATH_TO_BOT + "/bot-bob/.env.token"
 TOKEN_KEY = "token"
 CONFIG_FILE = PATH_TO_BOT + "/bot-bob/.bot.config"
 ADMINS_KEY = "admins"
-FROGGY_KEY = "froggy"
 BOB_KEY = "bob"
 GENERIC_ERROR = "oopsie error happen"
 MOCK_RESPONSES = [

@@ -31,11 +31,16 @@ bot = commands.Bot(command_prefix=constants.PREFIX, intents=intents)
 
 @bot.tree.error
 async def on_command_error(interaction: Interaction, error):
+    Logger.e(GenericError(), str(error))
     if not interaction.response.is_done():
         await interaction.response.send_message(
             content=constants.GENERIC_ERROR,
             ephemeral=True
         )
+
+class GenericError(tagged.Tagged):
+    def __init__(self):
+        self.TAG = type(self).__name__
 
 class Main(tagged.Tagged):
     def __init__(self):
