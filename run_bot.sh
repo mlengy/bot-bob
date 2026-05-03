@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/python3 /home/ubuntu/bot-gary/bot-bob/main.py &> /dev/null &
+/usr/bin/python3 /home/ubuntu/bot-gary/bot-gary/main.py &> /dev/null &

@@ -1,10 +1,10 @@
 from setuptools import setup
 
 setup(
-    name="bot-bob",
+    name="bot-gary",
     version="0.0.1",
-    description="bot bob",
+    description="bot gary",
     author="mkya",
-    packages=["bot-bob"],
+    packages=["bot-gary"],
     install_requires=["discord.py", "python-dotenv", "requests"]
 )

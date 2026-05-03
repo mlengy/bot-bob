@@ -1,9 +1,9 @@
 PATH_TO_BOT = "/Users/michael/Documents/play/dev/github/bot-gary"
 PREFIX = '`'
 TARGET_NAME = "gary"
-ENV_TOKEN = PATH_TO_BOT + "/bot-bob/.env.token"
+ENV_TOKEN = PATH_TO_BOT + "/bot-gary/.env.token"
 TOKEN_KEY = "token"
-CONFIG_FILE = PATH_TO_BOT + "/bot-bob/.bot.config"
+CONFIG_FILE = PATH_TO_BOT + "/bot-gary/.bot.config"
 ADMINS_KEY = "admins"
 BOB_KEY = "bob"
 MOCK_ALL_KEY = "mock_all"
