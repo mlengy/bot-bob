@@ -1,5 +1,7 @@
+from typing import Optional
 from discord.ext import commands
 from discord import app_commands, Interaction, Message
+from dotenv import dotenv_values
 from enum import Enum
 import random
 import re
@@ -8,7 +10,6 @@ import constants
 import tagged
 from logger import Logger
 
-AUTO_ENABLED = False
 # amount of messages needed before next spongebot is between
 # AUTO_MESSAGE_OFFSET and AUTO_MESSAGE_OFFSET + AUTO_MESSAGE_RANGE inclusive on both sides
 AUTO_MESSAGE_OFFSET = 100
@@ -25,14 +26,28 @@ class Spongebot(commands.Cog, tagged.Tagged):
     def __init__(self, bot):
         self.bot = bot
         self.TAG = type(self).__name__
-        self.message_counter = 0
-        self.__compute_new_message_limit()
 
         self.mock_context_menu = app_commands.ContextMenu(
             name='mock',
             callback=self.__mock_context_menu
         )
         self.bot.tree.add_command(self.mock_context_menu)
+
+        self.all_enabled = dotenv_values(constants.CONFIG_FILE)[constants.MOCK_ALL_KEY] == "true"
+        targets_string = dotenv_values(constants.CONFIG_FILE)[constants.MOCK_TARGETS_KEY].split("\n")
+        targets_split = {
+            int(target[0]): target[1] for target in (target.split(":") for target in targets_string)
+        }
+        self.target_counts = {
+            target: 0 for target in targets_split.keys()
+        }
+        self.target_params = {
+            target[0]: tuple(int(param) for param in target[1].split(',')) for target in targets_split.items()
+        }
+
+        self.all_message_counter = 0
+        self.__compute_new_message_limit_all()
+        self.__compute_new_message_limit_target()
 
     @app_commands.command(
         name="mock",
@@ -73,17 +88,32 @@ class Spongebot(commands.Cog, tagged.Tagged):
         if message.author == self.bot.user:
             return
 
+        author_id = message.author.id
+        is_targeted = author_id in self.target_params
+
+        if not self.all_enabled:
+            if not is_targeted:
+                return
+
         text = message.clean_content
 
         if text.startswith(constants.PREFIX):
             return
 
-        if self.message_counter < self.message_limit:
-            self.message_counter += 1
-            return
+        if is_targeted:
+            if self.target_counts[author_id] < self.target_limits[author_id]:
+                self.target_counts[author_id] += 1
+                return
+            else:
+                self.target_counts[author_id] = 0
+                self.__compute_new_message_limit_target(author_id)
         else:
-            self.message_counter = 0
-            self.__compute_new_message_limit()
+            if self.all_message_counter < self.message_limit:
+                self.all_message_counter += 1
+                return
+            else:
+                self.all_message_counter = 0
+                self.__compute_new_message_limit_all()
 
         modified_text = Spongebot.__spongebob_mock(self, text)
 
@@ -167,8 +197,16 @@ class Spongebot(commands.Cog, tagged.Tagged):
         Logger.v(spongebot, f"spongebotted message: [\n{modified_text}\n]")
         return modified_text
 
-    def __compute_new_message_limit(self):
+    def __compute_new_message_limit_all(self):
         self.message_limit = random.randrange(AUTO_MESSAGE_RANGE + 1) + AUTO_MESSAGE_OFFSET
+
+    def __compute_new_message_limit_target(self, target: Optional[int] = None):
+        if target is None:
+            self.target_limits = {
+                target[0]: (random.randrange(target[1][1] + 1) + target[1][0]) for target in self.target_params.items()
+            }
+        elif target in self.target_params:
+            self.target_limits[target] = random.randrange(self.target_params[target][1] + 1) + self.target_params[target][0]
 
     async def cog_command_error(self, ctx, error):
         Logger.e(self, f"{error}")

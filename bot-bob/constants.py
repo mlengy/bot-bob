@@ -5,6 +5,8 @@ TOKEN_KEY = "token"
 CONFIG_FILE = PATH_TO_BOT + "/bot-bob/.bot.config"
 ADMINS_KEY = "admins"
 BOB_KEY = "bob"
+MOCK_ALL_KEY = "mock_all"
+MOCK_TARGETS_KEY = "mock_targets"
 GENERIC_ERROR = "oopsie error happen"
 MOCK_RESPONSES = [
     "hahaha nice one",
