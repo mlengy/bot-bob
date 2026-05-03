@@ -82,7 +82,7 @@ class Bob(commands.GroupCog, tagged.Tagged, name=f"{constants.TARGET_NAME}"):
 
     @app_commands.command(
         name="disconnect",
-        description="disconnects bob",
+        description=f"disconnects {constants.TARGET_NAME}",
     )
     async def disconnect(self, interaction: Interaction):
         bobs = await self.__get_bobs_in_voice(interaction)
@@ -100,10 +100,10 @@ class Bob(commands.GroupCog, tagged.Tagged, name=f"{constants.TARGET_NAME}"):
 
     @app_commands.command(
         name="kick",
-        description="kicks bob",
+        description=f"kicks {constants.TARGET_NAME}",
     )
     @app_commands.describe(
-        reason="reason for kicking bob",
+        reason=f"reason for kicking {constants.TARGET_NAME}",
     )
     async def kick(self, interaction: Interaction, reason: Optional[str]):
         guild_members = interaction.guild.members
@@ -122,11 +122,11 @@ class Bob(commands.GroupCog, tagged.Tagged, name=f"{constants.TARGET_NAME}"):
 
     @app_commands.command(
         name="timeout",
-        description="timeouts bob",
+        description=f"timeouts {constants.TARGET_NAME}",
     )
     @app_commands.describe(
-        seconds="amount of time in seconds to timeout bob",
-        reason="reason for timing out bob",
+        seconds=f"amount of time in seconds to timeout {constants.TARGET_NAME}",
+        reason=f"reason for timing out {constants.TARGET_NAME}",
     )
     async def timeout(self, interaction: Interaction, seconds: int, reason: Optional[str]):
         guild_members = interaction.guild.members
@@ -165,7 +165,7 @@ class Bob(commands.GroupCog, tagged.Tagged, name=f"{constants.TARGET_NAME}"):
 
     @staticmethod
     async def __error_bob(interaction: Interaction):
-        await interaction.response.send_message(content="nice try bob")
+        await interaction.response.send_message(content=f"nice try {constants.TARGET_NAME}")
 
     @staticmethod
     async def __error(interaction: Interaction, error: Exception):
