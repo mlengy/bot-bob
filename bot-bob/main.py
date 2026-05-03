@@ -6,7 +6,7 @@ from discord.ext import commands
 import constants
 import tagged
 from logger import Logger
-from util import format_error
+from util import format_error, wrap_in_code_block
 
 
 COG_TYPE_ESSENTIALS = "essentials"
@@ -36,7 +36,7 @@ async def on_command_error(interaction: Interaction, error):
     Logger.e(GenericError(), format_error(error))
     if not interaction.response.is_done():
         await interaction.response.send_message(
-            content=constants.GENERIC_ERROR,
+            content=constants.GENERIC_ERROR + '\n' + wrap_in_code_block(format_error(error)),
             ephemeral=True
         )
 

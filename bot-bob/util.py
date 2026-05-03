@@ -19,3 +19,6 @@ def get_bobs():
 
 def check_if_not_bob(interaction: Interaction):
     return interaction.user.id not in get_bobs()
+
+def wrap_in_code_block(string: str):
+    return f"```\n{string}\n```"

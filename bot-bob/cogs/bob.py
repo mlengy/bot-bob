@@ -6,7 +6,7 @@ import constants
 import tagged
 from logger import Logger
 from main import GenericError
-from util import get_bobs, check_if_not_bob, format_error
+from util import get_bobs, check_if_not_bob, format_error, wrap_in_code_block
 
 
 class Bob(commands.GroupCog, tagged.Tagged):
@@ -122,7 +122,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
             if isinstance(error, app_commands.CheckFailure):
                 await self.__error_bob(interaction)
             else:
-                await self.__error(interaction)
+                await self.__error(interaction, error)
 
     @staticmethod
     async def __message_if_bob_on(interaction: Interaction, is_bob_on: bool, message: str):
@@ -136,9 +136,9 @@ class Bob(commands.GroupCog, tagged.Tagged):
         await interaction.response.send_message(content="nice try bob")
 
     @staticmethod
-    async def __error(interaction: Interaction):
+    async def __error(interaction: Interaction, error: Exception):
         await interaction.response.send_message(
-            content=constants.GENERIC_ERROR,
+            content=constants.GENERIC_ERROR + '\n' +  wrap_in_code_block(format_error(error)),
             ephemeral=True
         )
 
