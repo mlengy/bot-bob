@@ -1,5 +1,6 @@
 PATH_TO_BOT = "/Users/michael/Documents/play/dev/github/bot-bob"
 PREFIX = '`'
+TARGET_NAME = "bob"
 ENV_TOKEN = PATH_TO_BOT + "/bot-bob/.env.token"
 TOKEN_KEY = "token"
 CONFIG_FILE = PATH_TO_BOT + "/bot-bob/.bot.config"

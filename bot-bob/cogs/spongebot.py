@@ -12,8 +12,8 @@ from logger import Logger
 
 # amount of messages needed before next spongebot is between
 # AUTO_MESSAGE_OFFSET and AUTO_MESSAGE_OFFSET + AUTO_MESSAGE_RANGE inclusive on both sides
-AUTO_MESSAGE_OFFSET = 100
-AUTO_MESSAGE_RANGE = 50
+AUTO_MESSAGE_OFFSET = 200
+AUTO_MESSAGE_RANGE = 100
 
 MODIFIER_STRINGS = [
     "*",

@@ -12,7 +12,7 @@ from util import get_bobs, check_if_not_bob, format_error, wrap_in_code_block
 TIMEOUT_MAX_SECONDS = 100
 
 
-class Bob(commands.GroupCog, tagged.Tagged):
+class Bob(commands.GroupCog, tagged.Tagged, name=f"{constants.TARGET_NAME}"):
     def __init__(self, bot):
         self.bot = bot
         self.TAG = type(self).__name__
@@ -20,7 +20,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
 
     @app_commands.command(
         name="mute",
-        description="mutes bob",
+        description=f"mutes {constants.TARGET_NAME}",
     )
     @app_commands.check(check_if_not_bob)
     async def mute(self, interaction: Interaction):
@@ -51,7 +51,7 @@ class Bob(commands.GroupCog, tagged.Tagged):
 
     @app_commands.command(
         name="deafen",
-        description="deafens bob",
+        description=f"deafens {constants.TARGET_NAME}",
     )
     @app_commands.check(check_if_not_bob)
     async def deafen(self, interaction: Interaction):

@@ -68,7 +68,7 @@ class Main(tagged.Tagged):
         Logger.divider()
         await bot.change_presence(
             status=discord.Status.dnd,
-            activity=discord.CustomActivity("watching bob")
+            activity=discord.CustomActivity(f"watching {constants.TARGET_NAME}")
         )
 
         await Main.setup_cogs()

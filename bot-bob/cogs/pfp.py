@@ -19,7 +19,7 @@ class Pfp(commands.GroupCog, tagged.Tagged):
 
     @app_commands.command(
         name="me",
-        description="updates bobot's pfp to yours"
+        description="updates bot's pfp to yours"
     )
     @app_commands.check(is_admin)
     async def me(self, interaction: Interaction):
@@ -32,7 +32,7 @@ class Pfp(commands.GroupCog, tagged.Tagged):
 
     @app_commands.command(
         name="you",
-        description="updates bobot's pfp to someone else's"
+        description="updates bot's pfp to someone else's"
     )
     @app_commands.check(is_admin)
     async def you(self, interaction: Interaction, mention: Member):
@@ -44,8 +44,8 @@ class Pfp(commands.GroupCog, tagged.Tagged):
         await Pfp.__error_pfp_update(interaction, error)
 
     @app_commands.command(
-        name="bob",
-        description="updates bobot's pfp to bob's"
+        name=f"{constants.TARGET_NAME}",
+        description=f"updates bot's pfp to {constants.TARGET_NAME}'s"
     )
     @app_commands.check(is_admin)
     async def bob(self, interaction: Interaction):
