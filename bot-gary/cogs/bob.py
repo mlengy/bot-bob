@@ -7,7 +7,7 @@ import constants
 import tagged
 from logger import Logger
 from main import GenericError
-from util import get_bobs, check_if_not_bob, format_error, wrap_in_code_block
+from util import get_bobs, check_if_not_bob, format_error, wrap_in_code_block, is_admin
 
 TIMEOUT_MAX_SECONDS = 100
 
@@ -105,6 +105,7 @@ class Bob(commands.GroupCog, tagged.Tagged, name=f"{constants.TARGET_NAME}"):
     @app_commands.describe(
         reason=f"reason for kicking {constants.TARGET_NAME}",
     )
+    @app_commands.check(is_admin)
     async def kick(self, interaction: Interaction, reason: Optional[str]):
         guild_members = interaction.guild.members
         bobs_kicked = []
