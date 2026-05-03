@@ -1,4 +1,5 @@
 from typing import Optional
+import datetime as datetime
 from discord.ext import commands
 from discord import app_commands, Interaction, Member
 
@@ -7,6 +8,8 @@ import tagged
 from logger import Logger
 from main import GenericError
 from util import get_bobs, check_if_not_bob, format_error, wrap_in_code_block
+
+TIMEOUT_MAX_SECONDS = 100
 
 
 class Bob(commands.GroupCog, tagged.Tagged):
@@ -113,6 +116,35 @@ class Bob(commands.GroupCog, tagged.Tagged):
 
         if bobs_kicked:
             message = "\n".join([f"kicked {bob_kicked}" for bob_kicked in bobs_kicked])
+            await interaction.response.send_message(message)
+        else:
+            await interaction.response.send_message("bob isn't even here")
+
+    @app_commands.command(
+        name="timeout",
+        description="timeouts bob",
+    )
+    @app_commands.describe(
+        seconds="amount of time in seconds to timeout bob",
+        reason="reason for timing out bob",
+    )
+    async def timeout(self, interaction: Interaction, seconds: int, reason: Optional[str]):
+        guild_members = interaction.guild.members
+        bobs_timeouted = []
+
+        if seconds < 0 or seconds > TIMEOUT_MAX_SECONDS:
+            await interaction.response.send_message(f"max timeout is {TIMEOUT_MAX_SECONDS} seconds!")
+            return
+
+        timedelta = datetime.timedelta(seconds=seconds)
+
+        for member in guild_members:
+            if member.id in self.bob_ids:
+                bobs_timeouted.append(self.bob_ids[member.id])
+                await member.timeout(timedelta, reason=reason)
+
+        if bobs_timeouted:
+            message = "\n".join([f"timed out {bob_timeouted} for {seconds} seconds" for bob_timeouted in bobs_timeouted])
             await interaction.response.send_message(message)
         else:
             await interaction.response.send_message("bob isn't even here")
