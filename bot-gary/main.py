@@ -20,7 +20,8 @@ COGS = {
     COG_TYPE_ESSENTIALS: [
         "utilities",
         "bob",
-        "pfp"
+        "pfp",
+        "d4vdetector"
     ],
     COG_TYPE_FUN: [
         "spongebot"

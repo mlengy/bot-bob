@@ -8,6 +8,9 @@ ADMINS_KEY = "admins"
 BOB_KEY = "bob"
 MOCK_ALL_KEY = "mock_all"
 MOCK_TARGETS_KEY = "mock_targets"
+D4VD_TARGETS_KEY = "d4vd_targets"
+D4VD_CHANNELS_KEY = "d4vd_channels"
+D4VD_ARTISTS_KEY = "d4vd_artists"
 GENERIC_ERROR = "oopsie error happen"
 MOCK_RESPONSES = [
     "hahaha nice one",
